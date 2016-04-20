@@ -1,0 +1,21 @@
+Web:
+
+  +  Log into Shippable, go to history page
+  +  Log into S3, go to repository page
+  +  Start up presentation
+  +  Set to full screen
+
+QGIS:
+
+  +  Toolbars minimised
+  +  Debug mode on
+  +  Big font on maximised console window
+  +  Demo.sqlite database pre-tested in sqlite loader
+
+Skype:
+
+  +  Log off
+
+Git:
+
+  +  Delete branches from previous talk practice efforts

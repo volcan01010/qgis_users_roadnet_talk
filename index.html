@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>QGIS User Group: Introduction to roadNet</title>
+
+		<meta name="description" content="Presentation slides for QGIS Users Group">
+		<meta name="author" content="Dr John A Stevenson">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/solarized.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>roadNet</h1>
+					<h3>Technical and development overview</h3>
+					<p>
+						<small><a href="https://twitter.com/volcan01010">Dr John A Stevenson</a> / <a href="https://twitter.com/volcan01010">@volcan01010</a></small>
+					</p>
+                    <a href="http://www.thinkwhere.com"><img src="./images/thinkWhere_logo.png" width=255 style="background:none; border:none; box-shadow:none;"></a>
+				</section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                    ## Contents
+                      + Cloud repository (Part 1)
+                      + SQLite for data storage
+                      + Automatic database updates
+                      + Cloud repository (Part 2)
+                    </script>
+                </section>
+
+                <section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ## Cloud repository (Part 1)
+                    </script>
+                </section>
+                <section>
+                    <h3>Cloud deployment</h3>
+                    <img class="stretch" src="images/cloud_deployment.png">
+                    <p><b>Test edit:</b> Insert <i>number + verb + animal</i></p>
+                </section>
+                </section>
+
+                <section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ## SQLite for data storage
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ### File-based storage options
+
+                    |Format          | Multi-layer | Multi-table | Open |
+                    |:---------------|:-----------:|:-----------:|:----:|
+                    |Shapefile       |No           |No           |Yes          
+                    |ESRI GeoDB      |Yes          |Yes          |No           
+                    |Spatialite      |Yes          |Yes          |Yes         
+
+                    ![Spatialite](images/spatialite.png)
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ### Database storage options
+
+                    |Format          | Multi-User | Open | Needs server |
+                    |:---------------|:----------:|:----:|:------------:|
+                    |PostGIS         |Yes         |Yes   |Yes                
+                    |Spatialite      |No          |Yes   |No                 
+                    </script>
+                </section>
+                <section>
+                    <h3>Database structure</h3>
+                    <img class="stretch" src="images/db_structure.png" style="background:none; border:none; box-shadow:none;">
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ### Using SQLite in QGIS
+                    +  Connecting to database
+                    +  Viewing tables
+                    +  Storing layer styles
+                    </script>
+                </section>
+                </section>
+
+                <section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ## Automatic database updates
+                    ### Signals and slots
+
+                    +  QGIS passes information using signals and slots
+                    +  roadNet's **EditHandler** class listens for vector edit signals
+                    +  Custom functions update database in response to signals
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                    Features can be checked as soon as they are drawn
+                    ```
+def connect_edit_buffer_signals(self):
+    """Connect signals for real-time editing events"""
+    self.edit_buffer.featureAdded.connect(self.feature_added)
+    self.edit_buffer.geometryChanged.connect(self.geometry_changed)
+    self.edit_buffer.featureDeleted.connect(self.feature_deleted)
+
+def feature_added(self, layer_id, added_feature):
+    """Check for intersections"""
+    print("Feature added: {}".format(added_feature)
+    self.warn_on_intersections(feature)
+        ```
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                    Database changes are handled when features are committed
+                    ```
+def connect_commited_edit_signals(self):
+    """Connect signals for saved edits"""
+    self.vlayer.committedFeaturesAdded.connect(self.adds_committed)
+    self.vlayer.committedGeometriesChanges.connect(self.changes_committed)
+    self.vlayer.committedFeaturesRemoved.connect(self.deletes_committed)
+
+def adds_committed(self, layer_id, added_features):
+    """Update the database"""
+    print("Features added: {}".format(added_features)
+    for feature in added_features:
+        self.database_handler.add(feature)
+        ```
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ### Demonstration
+                    +  _EditBuffer_:  features added, modified, deleted
+                    +  _CommittedFeature_:  features added, modified, deleted
+                    +  _ESU splitting_:  adds, modifies and deletes at once
+                    </script>
+                </section>
+                </section>
+
+                <section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ## Cloud repository (Part 2)
+                    </script>
+                </section>
+                <section>
+                    <h3>Cloud deployment</h3>
+                    <img src="images/cloud_deployment_commit.png" style="background:none; border:none; box-shadow:none;">
+                </section>
+                <section>
+                    <h3>Cloud deployment</h3>
+                    <img src="images/cloud_deployment_all.png" style="background:none; border:none; box-shadow:none;">
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ### Demonstration
+                    +  Status report in Shippable repository
+                    +  New repository created in Amazon S3
+                    +  Updated menu item in QGIS
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ### ...and this is what you should have seen...
+                    ![Shippable pass](./images/shippable_pass_zoom.png)
+                    </script>
+                </section>
+                </section>
+                <section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ## Thank you
+                    Slides coming soon to
+
+                    [https://github.com/volcan01010/qgis_users_roadnet_talk](https://github.com/volcan01010/qgis_users_roadnet_talk)
+                    </script>
+                </section>
+                </section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+                parallaxBackgroundImage: './images/stirling_map_solarized_light.png',
+                parallaxBackgroundSize: "1886px 1080px",
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

@@ -42,21 +42,91 @@
 			<div class="slides">
 				<section>
 					<h1>roadNet</h1>
-					<h3>Technical and development overview</h3>
+					<h3>Road database management plugin for QGIS</h3>
 					<p>
 						<small><a href="https://twitter.com/volcan01010">Dr John A Stevenson</a> / <a href="https://twitter.com/volcan01010">@volcan01010</a></small>
 					</p>
                     <a href="http://www.thinkwhere.com"><img src="./images/thinkWhere_logo.png" width=255 style="background:none; border:none; box-shadow:none;"></a>
 				</section>
 
+                <section>
+                    <h2>Contents</h2>
+
+                    <span class="fragment current-visible">
+                    <h4>Roads database management</h4>
+                    <ul>
+                        <li>Why do we need a roads database?</li>
+                        <li>roadNet</li>
+                    </ul>
+                    </span>
+                    <span class="fragment current-visible">
+                    <h4>Development and technical overview</h4>
+                    <ul>
+                        <li>Cloud repository (Part 1)</li>
+                        <li>SQLite for data storage</li>
+                        <li>Automatic database updates</li>
+                        <li>Cloud repository (Part 2)</li>
+                    </ul>
+                    </span>
+                </section>
+
+                <section>
                 <section data-markdown>
                     <script type="text/template">
-                    ## Contents
-                      + Cloud repository (Part 1)
-                      + SQLite for data storage
-                      + Automatic database updates
-                      + Cloud repository (Part 2)
+                    ## Why do we need a roads database?
                     </script>
+                </section>
+                <section>
+                    <h3>Local Street Gazetteer</h3>
+                    <img class="stretch" src="images/slack_bottom.png">
+                    <p>So we know our address</p>
+                </section>
+                <section>
+                    <h3>Scottish Roadworks Register</h3>
+                    <img class="stretch" src="images/roadworks.png">
+                    <p>So work can be arranged and coordinated</p>
+                </section>
+                <section>
+                    <h3>List of Public Roads</h3>
+                    <img class="stretch" src="images/public_roads.png">
+                    <p>So we know what is maintained by the local authority</p>
+                </section>
+                </section>
+
+                <section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ## roadNet
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ### Every road in Scotland must have:
+
+                      +  Unique Street Record Number (USRN)
+                      +  Street description  _i.e Mercator Lane_
+                      +  Maintenance responsibility
+                      +  Coordinates (start, end, centreline)
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ## roadNET
+
+                      +  QGIS Python plugin (GPL v2)
+                      +  QGIS for editing geometries
+                      +  *Street Browser* for updating database
+                      +  Export tools
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ### Demonstration
+                    +  _ESU Selector / Street Browser_: view records
+                    +  _QGIS edit tools_: Digitising new features
+                    +  _Street Browser_: Updating database records
+                    </script>
+                </section>
                 </section>
 
                 <section>
@@ -204,7 +274,7 @@ def adds_committed(self, layer_id, added_features):
                 <section data-markdown>
                     <script type="text/template">
                     ## Thank you
-                    Slides coming soon to
+                    Slides available at
 
                     [https://github.com/volcan01010/qgis_users_roadnet_talk](https://github.com/volcan01010/qgis_users_roadnet_talk)
                     </script>

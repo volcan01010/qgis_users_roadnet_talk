@@ -2,7 +2,7 @@ Web:
 
   +  Log into Shippable, go to history page
   +  Build latest_master
-  +  Log into S3, go to repository page
+  +  Log into S3 (https://thinkwhere.signin.aws.amazon.com/console), go to repository page
   +  Start up presentation
   +  Set to full screen
 

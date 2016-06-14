@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>QGIS User Group: Introduction to roadNet</title>
+		<title>FOSS4G: roadNet -  a tale of QGIS, automatic feature updating and repositories in the cloud</title>
 
 		<meta name="description" content="Presentation slides for QGIS Users Group">
 		<meta name="author" content="Dr John A Stevenson">
@@ -25,8 +25,8 @@
 			var link = document.createElement( 'link' );
 			link.rel = 'stylesheet';
 			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
 		</script>
 
 		<!--[if lt IE 9]>
@@ -42,27 +42,104 @@
 			<div class="slides">
 				<section>
 					<h1>roadNet</h1>
-					<h3>Technical and development overview</h3>
+					<h4>A tale of QGIS, automatic feature updating and repositories in the cloud</h4>
 					<p>
 						<small><a href="https://twitter.com/volcan01010">Dr John A Stevenson</a> / <a href="https://twitter.com/volcan01010">@volcan01010</a></small>
 					</p>
                     <a href="http://www.thinkwhere.com"><img src="./images/thinkWhere_logo.png" width=255 style="background:none; border:none; box-shadow:none;"></a>
 				</section>
 
-                <section data-markdown>
-                    <script type="text/template">
-                    ## Contents
-                      + Cloud repository (Part 1)
-                      + SQLite for data storage
-                      + Automatic database updates
-                      + Cloud repository (Part 2)
-                    </script>
+                <section>
+                    <h2>Contents</h2>
+
+                    <span class="fragment current-visible">
+                    <h4>Roads data management</h4>
+                    <ul>
+                        <li>Why do we need roads data?</li>
+                        <li>roadNet: A QGIS plugin for roads data management</li>
+                    </ul>
+                    </span>
+                    <span class="fragment current-visible">
+                    <h4>Development and technical overview</h4>
+                    <ul>
+                        <li>Cloud repository (Part 1)</li>
+                        <li>Spatialite for data storage</li>
+                        <li>Automatic database updates</li>
+                        <li>Cloud repository (Part 2)</li>
+                    </ul>
+                    </span>
                 </section>
 
                 <section>
                 <section data-markdown>
                     <script type="text/template">
-                    ## Cloud repository (Part 1)
+                    ## Why do we need roads data?
+                    </script>
+                </section>
+                <section>
+                    <h3>Local Street Gazetteer</h3>
+                    <img class="stretch" src="images/slack_bottom.png">
+                    <p>So we know our address</p>
+                </section>
+                <section>
+                    <h3>Scottish Roadworks Register</h3>
+                    <img class="stretch" src="images/roadworks.png">
+                    <p>So work can be arranged and coordinated</p>
+                </section>
+                <section>
+                    <h3>List of Public Roads</h3>
+                    <img class="stretch" src="images/public_roads.png">
+                    <p>So we know what is maintained by the local authority</p>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ### Every road in Scotland must have:
+
+                      +  Unique Street Record Number (USRN)
+                      +  Street description  _i.e Mercator Lane_
+                      +  Coordinates (start, end, centreline)
+                      +  Maintenance responsibility
+                    </script>
+                </section>
+                </section>
+
+                <section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ## roadNet
+                    ### A QGIS plugin for roads data management
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ## About roadNet
+
+                      +  Replaces previous ArcGIS tool
+                      +  Open source (GPL v2)
+                      +  Features:
+                        - QGIS for editing geometries
+                        - *Street Browser* for updating database
+                        - Tools for data export (e.g. SDTF)
+
+                    </script>
+                </section>
+                <section data-background-image="images/falkirk_wide_with_key.png" data-background-size="contain">
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ### Demonstration
+                    +  _ESU Selector / Street Browser_: view records
+                    +  _QGIS edit tools_: Digitising new features
+                    +  _Street Browser_: Updating database records
+                    </script>
+                </section>
+                </section>
+
+                <section>
+                <section data-markdown>
+                    <script type="text/template">
+                    ## Development and technical overview
+                    ### Cloud repository (Part 1)
                     </script>
                 </section>
                 <section>
@@ -75,12 +152,14 @@
                 <section>
                 <section data-markdown>
                     <script type="text/template">
-                    ## SQLite for data storage
+                    ## Spatialite for data storage
                     </script>
                 </section>
                 <section data-markdown>
                     <script type="text/template">
                     ### File-based storage options
+
+                    ![Spatialite](images/spatialite.png)
 
                     |Format          | Multi-layer | Multi-table | Open |
                     |:---------------|:-----------:|:-----------:|:----:|
@@ -88,7 +167,6 @@
                     |ESRI GeoDB      |Yes          |Yes          |No           
                     |Spatialite      |Yes          |Yes          |Yes         
 
-                    ![Spatialite](images/spatialite.png)
                     </script>
                 </section>
                 <section data-markdown>
@@ -107,7 +185,7 @@
                 </section>
                 <section data-markdown>
                     <script type="text/template">
-                    ### Using SQLite in QGIS
+                    ### Using Spatialite in QGIS
                     +  Connecting to database
                     +  Viewing tables
                     +  Storing layer styles
@@ -200,11 +278,12 @@ def adds_committed(self, layer_id, added_features):
                     </script>
                 </section>
                 </section>
+
                 <section>
                 <section data-markdown>
                     <script type="text/template">
                     ## Thank you
-                    Slides coming soon to
+                    Slides available at
 
                     [https://github.com/volcan01010/qgis_users_roadnet_talk](https://github.com/volcan01010/qgis_users_roadnet_talk)
                     </script>

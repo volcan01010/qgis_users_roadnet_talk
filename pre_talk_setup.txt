@@ -1,16 +1,23 @@
 Web:
 
   +  Log into Shippable, go to history page
-  +  Log into S3, go to repository page
+  +  Build latest_master
+  +  Log into S3 (https://thinkwhere.signin.aws.amazon.com/console), go to repository page
   +  Start up presentation
   +  Set to full screen
 
 QGIS:
 
+  +  Remove link to local roadnet
+  +  Connected to latest_push repo
+  +  Debug mode on (change in .qgis2/python/plugins/Roadnet
   +  Toolbars minimised
-  +  Debug mode on
   +  Big font on maximised console window
   +  Demo.sqlite database pre-tested in sqlite loader
+  +  Load background raster (images/os_background_castle_biz.png)
+  +  Set 'snap to vertex'
+  +  Auto open form off
+  +  Ensure that ESU layer is not pre-loaded from database
 
 Skype:
 
@@ -19,3 +26,4 @@ Skype:
 Git:
 
   +  Delete branches from previous talk practice efforts
+  +  Create new branch from latest_master
